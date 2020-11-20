@@ -503,6 +503,25 @@ namespace SpookVooper.Api
 
                 return results;
             }
+            public static async Task<List<StockOffer>> GetOwnerData(string ticker, string svid)
+            {
+                string response = await GetData($"https://api.spookvooper.com/eco/GetUserStockOffers?ticker={ticker}&svid={svid}");
+
+                List<StockOffer> results = null;
+
+                try
+                {
+                    results = JsonConvert.DeserializeObject<List<StockOffer>>(response);
+                }
+#pragma warning disable 0168
+                catch (System.Exception e)
+                {
+                    throw new VooperException($"Malformed response: {response}");
+                }
+#pragma warning restore 0168
+
+                return results;
+            }
         }
     }
 }
